@@ -1,7 +1,7 @@
 /**
  * File: binary_search_tree.cpp
  * Created Time: 2022-11-25
- * Author: Krahets (krahets@163.com)
+ * Author: krahets (krahets@163.com)
  */
 
 #include "../utils/common.hpp"
@@ -12,30 +12,19 @@ class BinarySearchTree {
     TreeNode *root;
 
   public:
-    BinarySearchTree(vector<int> nums) {
-        sort(nums.begin(), nums.end());             // 排序数组
-        root = buildTree(nums, 0, nums.size() - 1); // 构建二叉搜索树
+    /* 构造方法 */
+    BinarySearchTree() {
+        // 初始化空树
+        root = nullptr;
     }
 
+    /* 析构方法 */
     ~BinarySearchTree() {
         freeMemoryTree(root);
     }
 
     /* 获取二叉树根节点 */
     TreeNode *getRoot() {
-        return root;
-    }
-
-    /* 构建二叉搜索树 */
-    TreeNode *buildTree(vector<int> nums, int i, int j) {
-        if (i > j)
-            return nullptr;
-        // 将数组中间节点作为根节点
-        int mid = (i + j) / 2;
-        TreeNode *root = new TreeNode(nums[mid]);
-        // 递归建立左子树和右子树
-        root->left = buildTree(nums, i, mid - 1);
-        root->right = buildTree(nums, mid + 1, j);
         return root;
     }
 
@@ -60,9 +49,11 @@ class BinarySearchTree {
 
     /* 插入节点 */
     void insert(int num) {
-        // 若树为空，直接提前返回
-        if (root == nullptr)
+        // 若树为空，则初始化根节点
+        if (root == nullptr) {
+            root = new TreeNode(num);
             return;
+        }
         TreeNode *cur = root, *pre = nullptr;
         // 循环查找，越过叶节点后跳出
         while (cur != nullptr) {
@@ -77,7 +68,7 @@ class BinarySearchTree {
             else
                 cur = cur->left;
         }
-        // 插入节点 val
+        // 插入节点
         TreeNode *node = new TreeNode(num);
         if (pre->val < num)
             pre->right = node;
@@ -112,10 +103,15 @@ class BinarySearchTree {
             // 当子节点数量 = 0 / 1 时， child = nullptr / 该子节点
             TreeNode *child = cur->left != nullptr ? cur->left : cur->right;
             // 删除节点 cur
-            if (pre->left == cur)
-                pre->left = child;
-            else
-                pre->right = child;
+            if (cur != root) {
+                if (pre->left == cur)
+                    pre->left = child;
+                else
+                    pre->right = child;
+            } else {
+                // 若删除节点为根节点，则重新指定根节点
+                root = child;
+            }
             // 释放内存
             delete cur;
         }
@@ -138,8 +134,12 @@ class BinarySearchTree {
 /* Driver Code */
 int main() {
     /* 初始化二叉搜索树 */
-    vector<int> nums = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
-    BinarySearchTree *bst = new BinarySearchTree(nums);
+    BinarySearchTree *bst = new BinarySearchTree();
+    // 请注意，不同的插入顺序会生成不同的二叉树，该序列可以生成一个完美二叉树
+    vector<int> nums = {8, 4, 12, 2, 6, 10, 14, 1, 3, 5, 7, 9, 11, 13, 15};
+    for (int num : nums) {
+        bst->insert(num);
+    }
     cout << endl << "初始化的二叉树为\n" << endl;
     printTree(bst->getRoot());
 

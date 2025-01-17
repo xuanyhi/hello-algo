@@ -1,7 +1,7 @@
 /**
  * File: preorder_traversal_iii_compact.java
  * Created Time: 2023-04-16
- * Author: Krahets (krahets@163.com)
+ * Author: krahets (krahets@163.com)
  */
 
 package chapter_backtracking;
@@ -41,7 +41,7 @@ public class preorder_traversal_iii_compact {
         res = new ArrayList<>();
         preOrder(root);
 
-        System.out.println("\n输出所有根节点到节点 7 的路径，且路径中不包含值为 3 的节点");
+        System.out.println("\n输出所有根节点到节点 7 的路径，路径中不包含值为 3 的节点");
         for (List<TreeNode> path : res) {
             List<Integer> vals = new ArrayList<>();
             for (TreeNode node : path) {

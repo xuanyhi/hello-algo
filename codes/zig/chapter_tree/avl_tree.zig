@@ -1,6 +1,6 @@
 // File: avl_tree.zig
 // Created Time: 2023-01-15
-// Author: sjinzh (sjinzh@gmail.com)
+// Author: codingonion (coderonion@gmail.com)
 
 const std = @import("std");
 const inc = @import("include");
@@ -38,7 +38,7 @@ pub fn AVLTree(comptime T: type) type {
         // 更新节点高度
         fn updateHeight(self: *Self, node: ?*inc.TreeNode(T)) void {
             // 节点高度等于最高子树高度 + 1
-            node.?.height = std.math.max(self.height(node.?.left), self.height(node.?.right)) + 1;
+            node.?.height = @max(self.height(node.?.left), self.height(node.?.right)) + 1;
         }
 
         // 获取平衡因子
@@ -103,13 +103,13 @@ pub fn AVLTree(comptime T: type) type {
                     return self.leftRotate(node);
                 }
             }
-            // 平衡树，无需旋转，直接返回
+            // 平衡树，无须旋转，直接返回
             return node;
         }
 
         // 插入节点
-        fn insert(self: *Self, val: T) void {
-            self.root = try self.insertHelper(self.root, val);
+        fn insert(self: *Self, val: T) !void {
+            self.root = (try self.insertHelper(self.root, val)).?;
         }
 
         // 递归插入节点（辅助方法）
@@ -120,7 +120,7 @@ pub fn AVLTree(comptime T: type) type {
                 tmp_node.init(val);
                 return tmp_node;
             }
-            // 1. 查找插入位置，并插入节点
+            // 1. 查找插入位置并插入节点
             if (val < node.?.val) {
                 node.?.left = try self.insertHelper(node.?.left, val);
             } else if (val > node.?.val) {
@@ -137,14 +137,14 @@ pub fn AVLTree(comptime T: type) type {
 
         // 删除节点
         fn remove(self: *Self, val: T) void {
-           self.root = self.removeHelper(self.root, val);
+           self.root = self.removeHelper(self.root, val).?;
         }
 
         // 递归删除节点（辅助方法）
         fn removeHelper(self: *Self, node_: ?*inc.TreeNode(T), val: T) ?*inc.TreeNode(T) {
             var node = node_;
             if (node == null) return null;
-            // 1. 查找节点，并删除之
+            // 1. 查找节点并删除
             if (val < node.?.val) {
                 node.?.left = self.removeHelper(node.?.left, val);
             } else if (val > node.?.val) {
@@ -200,14 +200,14 @@ pub fn AVLTree(comptime T: type) type {
 
 pub fn testInsert(comptime T: type, tree_: *AVLTree(T), val: T) !void {
     var tree = tree_;
-    _ = try tree.insert(val);
+    try tree.insert(val);
     std.debug.print("\n插入节点 {} 后，AVL 树为\n", .{val});
     try inc.PrintUtil.printTree(tree.root, null, false);
 }
 
 pub fn testRemove(comptime T: type, tree_: *AVLTree(T), val: T) void {
     var tree = tree_;
-    _ = tree.remove(val);
+    tree.remove(val);
     std.debug.print("\n删除节点 {} 后，AVL 树为\n", .{val});
     try inc.PrintUtil.printTree(tree.root, null, false);
 }

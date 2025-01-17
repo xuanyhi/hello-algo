@@ -1,20 +1,21 @@
 """
 File: my_heap.py
 Created Time: 2023-02-23
-Author: Krahets (krahets@163.com)
+Author: krahets (krahets@163.com)
 """
 
-import sys, os.path as osp
+import sys
+from pathlib import Path
 
-sys.path.append(osp.dirname(osp.dirname(osp.abspath(__file__))))
-from modules import *
+sys.path.append(str(Path(__file__).parent.parent))
+from modules import print_heap
 
 
 class MaxHeap:
     """大顶堆"""
 
     def __init__(self, nums: list[int]):
-        """构造方法"""
+        """构造方法，根据输入列表建堆"""
         # 将列表元素原封不动添加进堆
         self.max_heap = nums
         # 堆化除叶节点以外的其他所有节点
@@ -22,21 +23,20 @@ class MaxHeap:
             self.sift_down(i)
 
     def left(self, i: int) -> int:
-        """获取左子节点索引"""
+        """获取左子节点的索引"""
         return 2 * i + 1
 
     def right(self, i: int) -> int:
-        """获取右子节点索引"""
+        """获取右子节点的索引"""
         return 2 * i + 2
 
     def parent(self, i: int) -> int:
-        """获取父节点索引"""
+        """获取父节点的索引"""
         return (i - 1) // 2  # 向下整除
 
     def swap(self, i: int, j: int):
         """交换元素"""
-        a, b = self.max_heap[i], self.max_heap[j]
-        self.max_heap[i], self.max_heap[j] = b, a
+        self.max_heap[i], self.max_heap[j] = self.max_heap[j], self.max_heap[i]
 
     def size(self) -> int:
         """获取堆大小"""
@@ -62,7 +62,7 @@ class MaxHeap:
         while True:
             # 获取节点 i 的父节点
             p = self.parent(i)
-            # 当“越过根节点”或“节点无需修复”时，结束堆化
+            # 当“越过根节点”或“节点无须修复”时，结束堆化
             if p < 0 or self.max_heap[i] <= self.max_heap[p]:
                 break
             # 交换两节点
@@ -75,7 +75,7 @@ class MaxHeap:
         # 判空处理
         if self.is_empty():
             raise IndexError("堆为空")
-        # 交换根节点与最右叶节点（即交换首元素与尾元素）
+        # 交换根节点与最右叶节点（交换首元素与尾元素）
         self.swap(0, self.size() - 1)
         # 删除节点
         val = self.max_heap.pop()
@@ -93,7 +93,7 @@ class MaxHeap:
                 ma = l
             if r < self.size() and self.max_heap[r] > self.max_heap[ma]:
                 ma = r
-            # 若节点 i 最大或索引 l, r 越界，则无需继续堆化，跳出
+            # 若节点 i 最大或索引 l, r 越界，则无须继续堆化，跳出
             if ma == i:
                 break
             # 交换两节点

@@ -20,7 +20,7 @@ void main() {
   map.forEach((key, value) => print("$key -> $value"));
 
   /* 查询操作 */
-  // 向哈希表输入键 key ，得到值 value
+  // 向哈希表中输入键 key ，得到值 value
   final String? name = map[15937];
   print("\n输入学号 15937 ，查询到姓名 $name");
 
@@ -34,7 +34,8 @@ void main() {
   print("\n遍历键值对 Key->Value");
   map.forEach((key, value) => print("$key -> $value"));
   print("\n单独遍历键 Key");
-  map.forEach((key, value) => print("$key"));
+  map.keys.forEach((key) => print(key));
   print("\n单独遍历值 Value");
   map.forEach((key, value) => print("$value"));
+  map.values.forEach((value) => print(value));
 }

@@ -16,6 +16,16 @@ class Trunk {
   Trunk(this.prev, this.str);
 }
 
+/* 打印矩阵 (Array) */
+void printMatrix(List<List<int>> matrix) {
+  print("[");
+  for (List<int> row in matrix) {
+    print("  $row,");
+  }
+  print("]");
+}
+
+/* 打印链表 */
 void printLinkedList(ListNode? head) {
   List<String> list = [];
 
@@ -27,7 +37,12 @@ void printLinkedList(ListNode? head) {
   print(list.join(' -> '));
 }
 
-void printTree(TreeNode? root, [Trunk? prev = null, bool isLeft = false]) {
+/**
+ * 打印二叉树
+ * This tree printer is borrowed from TECHIE DELIGHT
+ * https://www.techiedelight.com/c-program-print-binary-tree/
+ */
+void printTree(TreeNode? root, [Trunk? prev = null, bool isRight = false]) {
   if (root == null) {
     return;
   }
@@ -38,12 +53,12 @@ void printTree(TreeNode? root, [Trunk? prev = null, bool isLeft = false]) {
   printTree(root.right, trunk, true);
 
   if (prev == null) {
-    trunk.str = '---';
-  } else if (isLeft) {
-    trunk.str = '/---';
+    trunk.str = '———';
+  } else if (isRight) {
+    trunk.str = '/———';
     prev_str = '   |';
   } else {
-    trunk.str = '\\---';
+    trunk.str = '\\———';
     prev.str = prev_str;
   }
   showTrunks(trunk);
@@ -66,6 +81,7 @@ void showTrunks(Trunk? p) {
   stdout.write(p.str);
 }
 
+/* 打印堆 */
 void printHeap(List<int> heap) {
   print("堆的数组表示：$heap");
   print("堆的树状表示：");

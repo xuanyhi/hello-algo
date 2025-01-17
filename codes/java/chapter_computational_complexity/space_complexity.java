@@ -1,7 +1,7 @@
 /**
  * File: space_complexity.java
  * Created Time: 2022-11-25
- * Author: Krahets (krahets@163.com)
+ * Author: krahets (krahets@163.com)
  */
 
 package chapter_computational_complexity;
@@ -12,7 +12,7 @@ import java.util.*;
 public class space_complexity {
     /* 函数 */
     static int function() {
-        // do something
+        // 执行某些操作
         return 0;
     }
 

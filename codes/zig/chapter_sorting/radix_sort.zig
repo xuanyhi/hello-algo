@@ -1,6 +1,6 @@
 // File: radix_sort.zig
 // Created Time: 2023-01-15
-// Author: sjinzh (sjinzh@gmail.com)
+// Author: codingonion (coderonion@gmail.com)
 
 const std = @import("std");
 const inc = @import("include");
@@ -13,16 +13,16 @@ fn digit(num: i32, exp: i32) i32 {
 
 // 计数排序（根据 nums 第 k 位排序）
 fn countingSortDigit(nums: []i32, exp: i32) !void {
-    // 十进制的位范围为 0~9 ，因此需要长度为 10 的桶
+    // 十进制的位范围为 0~9 ，因此需要长度为 10 的桶数组
     var mem_arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
     // defer mem_arena.deinit();
     const mem_allocator = mem_arena.allocator();
     var counter = try mem_allocator.alloc(usize, 10);
-    std.mem.set(usize, counter, 0);
+    @memset(counter, 0);
     var n = nums.len;
     // 统计 0~9 各数字的出现次数
     for (nums) |num| {
-        var d = @bitCast(u32, digit(num, exp)); // 获取 nums[i] 第 k 位，记为 d
+        var d: u32 = @bitCast(digit(num, exp)); // 获取 nums[i] 第 k 位，记为 d
         counter[d] += 1; // 统计数字 d 的出现次数
     }
     // 求前缀和，将“出现个数”转换为“数组索引”
@@ -34,7 +34,7 @@ fn countingSortDigit(nums: []i32, exp: i32) !void {
     var res = try mem_allocator.alloc(i32, n);
     i = n - 1;
     while (i >= 0) : (i -= 1) {
-        var d = @bitCast(u32, digit(nums[i], exp));
+        var d: u32 = @bitCast(digit(nums[i], exp));
         var j = counter[d] - 1; // 获取 d 在数组中的索引 j
         res[j] = nums[i];       // 将当前元素填入索引 j
         counter[d] -= 1;        // 将 d 的数量减 1

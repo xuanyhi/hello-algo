@@ -1,26 +1,24 @@
 """
 File: graph_adjacency_matrix.py
 Created Time: 2023-02-23
-Author: Krahets (krahets@163.com)
+Author: krahets (krahets@163.com)
 """
 
-import sys, os.path as osp
+import sys
+from pathlib import Path
 
-sys.path.append(osp.dirname(osp.dirname(osp.abspath(__file__))))
-from modules import *
+sys.path.append(str(Path(__file__).parent.parent))
+from modules import Vertex, print_matrix
 
 
 class GraphAdjMat:
     """基于邻接矩阵实现的无向图类"""
 
-    # 顶点列表，元素代表“顶点值”，索引代表“顶点索引”
-    vertices: list[int] = []
-    # 邻接矩阵，行列索引对应“顶点索引”
-    adj_mat: list[list[int]] = []
-
-    def __init__(self, vertices: list[int], edges: list[list[int]]) -> None:
+    def __init__(self, vertices: list[int], edges: list[list[int]]):
         """构造方法"""
+        # 顶点列表，元素代表“顶点值”，索引代表“顶点索引”
         self.vertices: list[int] = []
+        # 邻接矩阵，行列索引对应“顶点索引”
         self.adj_mat: list[list[int]] = []
         # 添加顶点
         for val in vertices:
@@ -34,7 +32,7 @@ class GraphAdjMat:
         """获取顶点数量"""
         return len(self.vertices)
 
-    def add_vertex(self, val: int) -> None:
+    def add_vertex(self, val: int):
         """添加顶点"""
         n = self.size()
         # 向顶点列表中添加新顶点的值
@@ -46,7 +44,7 @@ class GraphAdjMat:
         for row in self.adj_mat:
             row.append(0)
 
-    def remove_vertex(self, index: int) -> None:
+    def remove_vertex(self, index: int):
         """删除顶点"""
         if index >= self.size():
             raise IndexError()
@@ -58,17 +56,17 @@ class GraphAdjMat:
         for row in self.adj_mat:
             row.pop(index)
 
-    def add_edge(self, i: int, j: int) -> None:
+    def add_edge(self, i: int, j: int):
         """添加边"""
         # 参数 i, j 对应 vertices 元素索引
         # 索引越界与相等处理
         if i < 0 or j < 0 or i >= self.size() or j >= self.size() or i == j:
             raise IndexError()
-        # 在无向图中，邻接矩阵沿主对角线对称，即满足 (i, j) == (j, i)
+        # 在无向图中，邻接矩阵关于主对角线对称，即满足 (i, j) == (j, i)
         self.adj_mat[i][j] = 1
         self.adj_mat[j][i] = 1
 
-    def remove_edge(self, i: int, j: int) -> None:
+    def remove_edge(self, i: int, j: int):
         """删除边"""
         # 参数 i, j 对应 vertices 元素索引
         # 索引越界与相等处理
@@ -77,7 +75,7 @@ class GraphAdjMat:
         self.adj_mat[i][j] = 0
         self.adj_mat[j][i] = 0
 
-    def print(self) -> None:
+    def print(self):
         """打印邻接矩阵"""
         print("顶点列表 =", self.vertices)
         print("邻接矩阵 =")
@@ -88,8 +86,8 @@ class GraphAdjMat:
 if __name__ == "__main__":
     # 初始化无向图
     # 请注意，edges 元素代表顶点索引，即对应 vertices 元素索引
-    vertices: list[int] = [1, 3, 2, 5, 4]
-    edges: list[list[int]] = [[0, 1], [0, 3], [1, 2], [2, 3], [2, 4], [3, 4]]
+    vertices = [1, 3, 2, 5, 4]
+    edges = [[0, 1], [0, 3], [1, 2], [2, 3], [2, 4], [3, 4]]
     graph = GraphAdjMat(vertices, edges)
     print("\n初始化后，图为")
     graph.print()

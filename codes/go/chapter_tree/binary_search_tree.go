@@ -5,8 +5,6 @@
 package chapter_tree
 
 import (
-	"sort"
-
 	. "github.com/krahets/hello-algo/pkg"
 )
 
@@ -14,27 +12,11 @@ type binarySearchTree struct {
 	root *TreeNode
 }
 
-func newBinarySearchTree(nums []int) *binarySearchTree {
-	// 排序数组
-	sort.Ints(nums)
-	// 构建二叉搜索树
+func newBinarySearchTree() *binarySearchTree {
 	bst := &binarySearchTree{}
-	bst.root = bst.buildTree(nums, 0, len(nums)-1)
+	// 初始化空树
+	bst.root = nil
 	return bst
-}
-
-/* 构建二叉搜索树 */
-func (bst *binarySearchTree) buildTree(nums []int, left, right int) *TreeNode {
-	if left > right {
-		return nil
-	}
-	// 将数组中间节点作为根节点
-	middle := left + (right-left)>>1
-	root := NewTreeNode(nums[middle])
-	// 递归构建左子树和右子树
-	root.Left = bst.buildTree(nums, left, middle-1)
-	root.Right = bst.buildTree(nums, middle+1, right)
-	return root
 }
 
 /* 获取根节点 */
@@ -47,10 +29,10 @@ func (bst *binarySearchTree) search(num int) *TreeNode {
 	node := bst.root
 	// 循环查找，越过叶节点后跳出
 	for node != nil {
-		if node.Val < num {
+		if node.Val.(int) < num {
 			// 目标节点在 cur 的右子树中
 			node = node.Right
-		} else if node.Val > num {
+		} else if node.Val.(int) > num {
 			// 目标节点在 cur 的左子树中
 			node = node.Left
 		} else {
@@ -65,8 +47,9 @@ func (bst *binarySearchTree) search(num int) *TreeNode {
 /* 插入节点 */
 func (bst *binarySearchTree) insert(num int) {
 	cur := bst.root
-	// 若树为空，直接提前返回
+	// 若树为空，则初始化根节点
 	if cur == nil {
+		bst.root = NewTreeNode(num)
 		return
 	}
 	// 待插入节点之前的节点位置
@@ -77,7 +60,7 @@ func (bst *binarySearchTree) insert(num int) {
 			return
 		}
 		pre = cur
-		if cur.Val < num {
+		if cur.Val.(int) < num {
 			cur = cur.Right
 		} else {
 			cur = cur.Left
@@ -85,7 +68,7 @@ func (bst *binarySearchTree) insert(num int) {
 	}
 	// 插入节点
 	node := NewTreeNode(num)
-	if pre.Val < num {
+	if pre.Val.(int) < num {
 		pre.Right = node
 	} else {
 		pre.Left = node
@@ -107,7 +90,7 @@ func (bst *binarySearchTree) remove(num int) {
 			break
 		}
 		pre = cur
-		if cur.Val < num {
+		if cur.Val.(int) < num {
 			// 待删除节点在右子树中
 			cur = cur.Right
 		} else {
@@ -128,11 +111,16 @@ func (bst *binarySearchTree) remove(num int) {
 		} else {
 			child = cur.Right
 		}
-		// 将子节点替换为待删除节点
-		if pre.Left == cur {
-			pre.Left = child
+		// 删除节点 cur
+		if cur != bst.root {
+			if pre.Left == cur {
+				pre.Left = child
+			} else {
+				pre.Right = child
+			}
 		} else {
-			pre.Right = child
+			// 若删除节点为根节点，则重新指定根节点
+			bst.root = child
 		}
 		// 子节点数为 2
 	} else {
@@ -142,7 +130,7 @@ func (bst *binarySearchTree) remove(num int) {
 			tmp = tmp.Left
 		}
 		// 递归删除节点 tmp
-		bst.remove(tmp.Val)
+		bst.remove(tmp.Val.(int))
 		// 用 tmp 覆盖 cur
 		cur.Val = tmp.Val
 	}

@@ -1,14 +1,14 @@
 /**
  * File: space_complexity.cpp
  * Created Time: 2022-11-25
- * Author: Krahets (krahets@163.com)
+ * Author: krahets (krahets@163.com)
  */
 
 #include "../utils/common.hpp"
 
 /* 函数 */
 int func() {
-    // do something
+    // 执行某些操作
     return 0;
 }
 

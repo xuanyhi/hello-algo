@@ -4,26 +4,15 @@
  * Author: nuomi1 (nuomi1@qq.com)
  */
 
-/* 键值对 int->String */
-class Entry {
-    var key: Int
-    var val: String
+import utils
 
-    init(key: Int, val: String) {
-        self.key = key
-        self.val = val
-    }
-}
-
-/* 基于数组简易实现的哈希表 */
+/* 基于数组实现的哈希表 */
 class ArrayHashMap {
-    private var buckets: [Entry?] = []
+    private var buckets: [Pair?]
 
     init() {
         // 初始化数组，包含 100 个桶
-        for _ in 0 ..< 100 {
-            buckets.append(nil)
-        }
+        buckets = Array(repeating: nil, count: 100)
     }
 
     /* 哈希函数 */
@@ -41,7 +30,7 @@ class ArrayHashMap {
 
     /* 添加操作 */
     func put(key: Int, val: String) {
-        let pair = Entry(key: key, val: val)
+        let pair = Pair(key: key, val: val)
         let index = hashFunc(key: key)
         buckets[index] = pair
     }
@@ -54,42 +43,24 @@ class ArrayHashMap {
     }
 
     /* 获取所有键值对 */
-    func entrySet() -> [Entry] {
-        var entrySet: [Entry] = []
-        for pair in buckets {
-            if let pair = pair {
-                entrySet.append(pair)
-            }
-        }
-        return entrySet
+    func pairSet() -> [Pair] {
+        buckets.compactMap { $0 }
     }
 
     /* 获取所有键 */
     func keySet() -> [Int] {
-        var keySet: [Int] = []
-        for pair in buckets {
-            if let pair = pair {
-                keySet.append(pair.key)
-            }
-        }
-        return keySet
+        buckets.compactMap { $0?.key }
     }
 
     /* 获取所有值 */
     func valueSet() -> [String] {
-        var valueSet: [String] = []
-        for pair in buckets {
-            if let pair = pair {
-                valueSet.append(pair.val)
-            }
-        }
-        return valueSet
+        buckets.compactMap { $0?.val }
     }
 
     /* 打印哈希表 */
     func print() {
-        for entry in entrySet() {
-            Swift.print("\(entry.key) -> \(entry.val)")
+        for pair in pairSet() {
+            Swift.print("\(pair.key) -> \(pair.val)")
         }
     }
 }
@@ -112,7 +83,7 @@ enum _ArrayHashMap {
         map.print()
 
         /* 查询操作 */
-        // 向哈希表输入键 key ，得到值 value
+        // 向哈希表中输入键 key ，得到值 value
         let name = map.get(key: 15937)!
         print("\n输入学号 15937 ，查询到姓名 \(name)")
 
@@ -124,8 +95,8 @@ enum _ArrayHashMap {
 
         /* 遍历哈希表 */
         print("\n遍历键值对 Key->Value")
-        for entry in map.entrySet() {
-            print("\(entry.key) -> \(entry.val)")
+        for pair in map.pairSet() {
+            print("\(pair.key) -> \(pair.val)")
         }
         print("\n单独遍历键 Key")
         for key in map.keySet() {

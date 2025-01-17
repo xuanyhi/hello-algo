@@ -1,7 +1,7 @@
 /**
  * File: preorder_traversal_ii_compact.cpp
  * Created Time: 2023-04-16
- * Author: Krahets (krahets@163.com)
+ * Author: krahets (krahets@163.com)
  */
 
 #include "../utils/common.hpp"
@@ -10,7 +10,7 @@ vector<TreeNode *> path;
 vector<vector<TreeNode *>> res;
 
 /* 前序遍历：例题二 */
-static void preOrder(TreeNode *root) {
+void preOrder(TreeNode *root) {
     if (root == nullptr) {
         return;
     }
@@ -28,7 +28,7 @@ static void preOrder(TreeNode *root) {
 
 /* Driver Code */
 int main() {
-    TreeNode *root = vecToTree(vector<int>{1, 7, 3, 4, 5, 6, 7});
+    TreeNode *root = vectorToTree(vector<int>{1, 7, 3, 4, 5, 6, 7});
     cout << "\n初始化二叉树" << endl;
     printTree(root);
 

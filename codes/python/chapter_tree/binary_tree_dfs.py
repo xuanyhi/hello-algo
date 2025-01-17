@@ -4,13 +4,14 @@ Created Time: 2022-12-20
 Author: a16su (lpluls001@gmail.com)
 """
 
-import sys, os.path as osp
+import sys
+from pathlib import Path
 
-sys.path.append(osp.dirname(osp.dirname(osp.abspath(__file__))))
-from modules import *
+sys.path.append(str(Path(__file__).parent.parent))
+from modules import TreeNode, list_to_tree, print_tree
 
 
-def pre_order(root: TreeNode | None) -> None:
+def pre_order(root: TreeNode | None):
     """前序遍历"""
     if root is None:
         return
@@ -20,7 +21,7 @@ def pre_order(root: TreeNode | None) -> None:
     pre_order(root=root.right)
 
 
-def in_order(root: TreeNode | None) -> None:
+def in_order(root: TreeNode | None):
     """中序遍历"""
     if root is None:
         return
@@ -30,7 +31,7 @@ def in_order(root: TreeNode | None) -> None:
     in_order(root=root.right)
 
 
-def post_order(root: TreeNode | None) -> None:
+def post_order(root: TreeNode | None):
     """后序遍历"""
     if root is None:
         return

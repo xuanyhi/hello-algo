@@ -1,7 +1,7 @@
 /**
  * File: preorder_traversal_iii_template.java
  * Created Time: 2023-04-16
- * Author: Krahets (krahets@163.com)
+ * Author: krahets (krahets@163.com)
  */
 
 package chapter_backtracking;
@@ -41,7 +41,6 @@ public class preorder_traversal_iii_template {
         if (isSolution(state)) {
             // 记录解
             recordSolution(state, res);
-            return;
         }
         // 遍历所有选择
         for (TreeNode choice : choices) {

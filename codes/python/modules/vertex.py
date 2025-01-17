@@ -1,12 +1,12 @@
 # File: vertex.py
 # Created Time: 2023-02-23
-# Author: Krahets (krahets@163.com)
+# Author: krahets (krahets@163.com)
 
 
 class Vertex:
     """顶点类"""
 
-    def __init__(self, val: int) -> None:
+    def __init__(self, val: int):
         self.val = val
 
 

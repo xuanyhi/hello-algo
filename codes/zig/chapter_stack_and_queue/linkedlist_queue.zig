@@ -1,6 +1,6 @@
 // File: linkedlist_queue.zig
 // Created Time: 2023-01-15
-// Author: sjinzh (sjinzh@gmail.com)
+// Author: codingonion (coderonion@gmail.com)
 
 const std = @import("std");
 const inc = @import("include");
@@ -12,11 +12,11 @@ pub fn LinkedListQueue(comptime T: type) type {
 
         front: ?*inc.ListNode(T) = null,                // 头节点 front
         rear: ?*inc.ListNode(T) = null,                 // 尾节点 rear
-        que_size: usize = 0,                             // 队列的长度
+        que_size: usize = 0,                            // 队列的长度
         mem_arena: ?std.heap.ArenaAllocator = null,
         mem_allocator: std.mem.Allocator = undefined,   // 内存分配器
 
-        // 构造方法（分配内存+初始化队列）
+        // 构造函数（分配内存+初始化队列）
         pub fn init(self: *Self, allocator: std.mem.Allocator) !void {
             if (self.mem_arena == null) {
                 self.mem_arena = std.heap.ArenaAllocator.init(allocator);
@@ -27,7 +27,7 @@ pub fn LinkedListQueue(comptime T: type) type {
             self.que_size = 0;
         }
 
-        // 析构方法（释放内存）
+        // 析构函数（释放内存）
         pub fn deinit(self: *Self) void {
             if (self.mem_arena == null) return;
             self.mem_arena.?.deinit();
@@ -51,7 +51,7 @@ pub fn LinkedListQueue(comptime T: type) type {
 
         // 入队
         pub fn push(self: *Self, num: T) !void {
-            // 尾节点后添加 num
+            // 在尾节点后添加 num
             var node = try self.mem_allocator.create(inc.ListNode(T));
             node.init(num);
             // 如果队列为空，则令头、尾节点都指向该节点
@@ -79,7 +79,7 @@ pub fn LinkedListQueue(comptime T: type) type {
         pub fn toArray(self: *Self) ![]T {
             var node = self.front;
             var res = try self.mem_allocator.alloc(T, self.size());
-            std.mem.set(T, res, @as(T, 0));
+            @memset(res, @as(T, 0));
             var i: usize = 0;
             while (i < res.len) : (i += 1) {
                 res[i] = node.?.val;

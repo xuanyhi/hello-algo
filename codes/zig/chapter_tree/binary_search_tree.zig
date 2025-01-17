@@ -1,6 +1,6 @@
 // File: binary_search_tree.zig
 // Created Time: 2023-01-15
-// Author: sjinzh (sjinzh@gmail.com)
+// Author: codingonion (coderonion@gmail.com)
 
 const std = @import("std");
 const inc = @import("include");
@@ -20,7 +20,7 @@ pub fn BinarySearchTree(comptime T: type) type {
                 self.mem_arena = std.heap.ArenaAllocator.init(allocator);
                 self.mem_allocator = self.mem_arena.?.allocator();
             }
-            std.sort.sort(T, nums, {}, comptime std.sort.asc(T));   // 排序数组
+            std.mem.sort(T, nums, {}, comptime std.sort.asc(T));   // 排序数组
             self.root = try self.buildTree(nums, 0, nums.len - 1);  // 构建二叉搜索树
         }
 
@@ -34,7 +34,7 @@ pub fn BinarySearchTree(comptime T: type) type {
         fn buildTree(self: *Self, nums: []T, i: usize, j: usize) !?*inc.TreeNode(T) {
             if (i > j) return null;
             // 将数组中间节点作为根节点
-            var mid = (i + j) / 2;
+            var mid = i + (j - i) / 2;
             var node = try self.mem_allocator.create(inc.TreeNode(T));
             node.init(nums[mid]);
             // 递归建立左子树和右子树
@@ -70,8 +70,11 @@ pub fn BinarySearchTree(comptime T: type) type {
 
         // 插入节点
         fn insert(self: *Self, num: T) !void {
-            // 若树为空，直接提前返回
-            if (self.root == null) return;
+            // 若树为空，则初始化根节点
+            if (self.root == null) {
+                self.root = try self.mem_allocator.create(inc.TreeNode(T));
+                return;
+            }
             var cur = self.root;
             var pre: ?*inc.TreeNode(T) = null;
             // 循环查找，越过叶节点后跳出
@@ -87,7 +90,7 @@ pub fn BinarySearchTree(comptime T: type) type {
                     cur = cur.?.left;
                 }
             }
-            // 插入节点 val
+            // 插入节点
             var node = try self.mem_allocator.create(inc.TreeNode(T));
             node.init(num);
             if (pre.?.val < num) {
@@ -98,7 +101,7 @@ pub fn BinarySearchTree(comptime T: type) type {
         }
 
         // 删除节点
-        fn remove(self: *Self, num: T) !void {
+        fn remove(self: *Self, num: T) void {
             // 若树为空，直接提前返回
             if (self.root == null) return;
             var cur = self.root;
@@ -135,14 +138,14 @@ pub fn BinarySearchTree(comptime T: type) type {
                 while (tmp.?.left != null) {
                     tmp = tmp.?.left;
                 }
-                var tmpVal = tmp.?.val;
+                var tmp_val = tmp.?.val;
                 // 递归删除节点 tmp
-                _ = self.remove(tmp.?.val);
+                self.remove(tmp.?.val);
                 // 用 tmp 覆盖 cur
-                cur.?.val = tmpVal;
+                cur.?.val = tmp_val;
             }
         }
-    };   
+    };
 }
 
 // Driver Code
@@ -160,18 +163,18 @@ pub fn main() !void {
     std.debug.print("\n查找到的节点对象为 {any}，节点值 = {}\n", .{node, node.?.val});
 
     // 插入节点
-    node = try bst.insert(16);
+    try bst.insert(16);
     std.debug.print("\n插入节点 16 后，二叉树为\n", .{});
     try inc.PrintUtil.printTree(bst.getRoot(), null, false);
 
     // 删除节点
-    _ = bst.remove(1);
+    bst.remove(1);
     std.debug.print("\n删除节点 1 后，二叉树为\n", .{});
     try inc.PrintUtil.printTree(bst.getRoot(), null, false);
-    _ = bst.remove(2);
+    bst.remove(2);
     std.debug.print("\n删除节点 2 后，二叉树为\n", .{});
     try inc.PrintUtil.printTree(bst.getRoot(), null, false);
-    _ = bst.remove(4);
+    bst.remove(4);
     std.debug.print("\n删除节点 4 后，二叉树为\n", .{});
     try inc.PrintUtil.printTree(bst.getRoot(), null, false);
 

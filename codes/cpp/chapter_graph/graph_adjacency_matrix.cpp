@@ -36,7 +36,7 @@ class GraphAdjMat {
         // 向顶点列表中添加新顶点的值
         vertices.push_back(val);
         // 在邻接矩阵中添加一行
-        adjMat.emplace_back(n, 0);
+        adjMat.emplace_back(vector<int>(n, 0));
         // 在邻接矩阵中添加一列
         for (vector<int> &row : adjMat) {
             row.push_back(0);
@@ -65,7 +65,7 @@ class GraphAdjMat {
         if (i < 0 || j < 0 || i >= size() || j >= size() || i == j) {
             throw out_of_range("顶点不存在");
         }
-        // 在无向图中，邻接矩阵沿主对角线对称，即满足 (i, j) == (j, i)
+        // 在无向图中，邻接矩阵关于主对角线对称，即满足 (i, j) == (j, i)
         adjMat[i][j] = 1;
         adjMat[j][i] = 1;
     }

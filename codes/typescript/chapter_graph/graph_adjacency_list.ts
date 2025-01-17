@@ -8,7 +8,7 @@ import { Vertex } from '../modules/Vertex';
 
 /* 基于邻接表实现的无向图类 */
 class GraphAdjList {
-    // 邻接表，key: 顶点，value：该顶点的所有邻接顶点
+    // 邻接表，key：顶点，value：该顶点的所有邻接顶点
     adjList: Map<Vertex, Vertex[]>;
 
     /* 构造方法 */
@@ -70,7 +70,7 @@ class GraphAdjList {
         // 在邻接表中删除顶点 vet 对应的链表
         this.adjList.delete(vet);
         // 遍历其他顶点的链表，删除所有包含 vet 的边
-        for (let set of this.adjList.values()) {
+        for (const set of this.adjList.values()) {
             const index: number = set.indexOf(vet);
             if (index > -1) {
                 set.splice(index, 1);
@@ -91,9 +91,8 @@ class GraphAdjList {
     }
 }
 
-// need to add the package @types/node contains type definitions for Node.js, npm i --save-dev @types/node
-if (require.main === module) {
-    /* Driver Code */
+/* Driver Code */
+if (import.meta.url.endsWith(process.argv[1])) {
     /* 初始化无向图 */
     const v0 = new Vertex(1),
         v1 = new Vertex(3),

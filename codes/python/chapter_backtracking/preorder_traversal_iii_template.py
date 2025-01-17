@@ -1,13 +1,14 @@
 """
 File: preorder_traversal_iii_template.py
 Created Time: 2023-04-15
-Author: Krahets (krahets@163.com)
+Author: krahets (krahets@163.com)
 """
 
-import sys, os.path as osp
+import sys
+from pathlib import Path
 
-sys.path.append(osp.dirname(osp.dirname(osp.abspath(__file__))))
-from modules import *
+sys.path.append(str(Path(__file__).parent.parent))
+from modules import TreeNode, print_tree, list_to_tree
 
 
 def is_solution(state: list[TreeNode]) -> bool:
@@ -35,13 +36,14 @@ def undo_choice(state: list[TreeNode], choice: TreeNode):
     state.pop()
 
 
-def backtrack(state: list[TreeNode], choices: list[TreeNode], res: list[list[TreeNode]]):
+def backtrack(
+    state: list[TreeNode], choices: list[TreeNode], res: list[list[TreeNode]]
+):
     """回溯算法：例题三"""
     # 检查是否为解
     if is_solution(state):
         # 记录解
         record_solution(state, res)
-        return
     # 遍历所有选择
     for choice in choices:
         # 剪枝：检查选择是否合法
@@ -59,7 +61,7 @@ if __name__ == "__main__":
     root = list_to_tree([1, 7, 3, 4, 5, 6, 7])
     print("\n初始化二叉树")
     print_tree(root)
-    
+
     # 回溯算法
     res = []
     backtrack(state=[], choices=[root], res=res)

@@ -1,7 +1,7 @@
 /**
  * File: binary_tree_bfs.java
  * Created Time: 2022-11-25
- * Author: Krahets (krahets@163.com)
+ * Author: krahets (krahets@163.com)
  */
 
 package chapter_tree;
@@ -13,7 +13,8 @@ public class binary_tree_bfs {
     /* 层序遍历 */
     static List<Integer> levelOrder(TreeNode root) {
         // 初始化队列，加入根节点
-        Queue<TreeNode> queue = new LinkedList<>() {{ add(root); }};
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
         // 初始化一个列表，用于保存遍历序列
         List<Integer> list = new ArrayList<>();
         while (!queue.isEmpty()) {
